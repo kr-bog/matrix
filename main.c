@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include <accctrl.h>
+#include <windows.h>
 #include "matrix.h"
 #include "ariph.h"
 
 int main(void) {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-
+    
     // Создаем две матрицы 3x3
     matrix* a = matrix_alloc(3, 3);
     matrix* b = matrix_alloc(3, 3);
@@ -15,15 +15,15 @@ int main(void) {
         return 1;
     }
 
-    // Инициализируем матрицы
-    for (size_t i = 0; i < 3; i++) {
-        for (size_t j = 0; j < 3; j++) {
-            matrix_set(a, i, j, (i == j) ? 1.0 : 0.0);
-            matrix_set(b, i, j, (i == j) ? 1.0 : 0.0);
-        }
-    }
-    matrix_set(a, 1, 1, 2.0);
-    matrix_set(a, 2, 2, -1.0);
+    // Устанавливаем значения для матрицы A
+    matrix_set(a, 0, 0, 1.0); matrix_set(a, 0, 1, 0.0); matrix_set(a, 0, 2, 0.0);
+    matrix_set(a, 1, 0, 0.0); matrix_set(a, 1, 1, 2.0); matrix_set(a, 1, 2, 0.0);
+    matrix_set(a, 2, 0, 0.0); matrix_set(a, 2, 1, 0.0); matrix_set(a, 2, 2, -1.0);
+
+    // Устанавливаем значения для матрицы B
+    matrix_set(b, 0, 0, 1.0); matrix_set(b, 0, 1, 0.0); matrix_set(b, 0, 2, 0.0);
+    matrix_set(b, 1, 0, 0.0); matrix_set(b, 1, 1, 1.0); matrix_set(b, 1, 2, 0.0);
+    matrix_set(b, 2, 0, 0.0); matrix_set(b, 2, 1, 0.0); matrix_set(b, 2, 2, 1.0);
 
     printf("Матрица A:\n");
     matrix_print(a);
@@ -47,7 +47,7 @@ int main(void) {
     matrix_print(a);
 
     // Тестирование метода Гаусса
-    matrix* slau = matrix_alloc(3, 4);
+    matrix* slau = matrix_alloc(4, 3);
     if (!slau) {
         printf("Ошибка выделения памяти\n");
         matrix_free(a);
@@ -57,11 +57,13 @@ int main(void) {
 
     // Пример системы уравнений
     matrix_set(slau, 0, 0, 2.0); matrix_set(slau, 0, 1, 1.0);
-    matrix_set(slau, 0, 2, -1.0); matrix_set(slau, 0, 3, 8.0);
+    matrix_set(slau, 0, 2, -1.0); matrix_set(slau, 0, 3, 8.0);  // 2x + y - z = 8
+
     matrix_set(slau, 1, 0, -3.0); matrix_set(slau, 1, 1, -1.0);
-    matrix_set(slau, 1, 2, 2.0); matrix_set(slau, 1, 3, -11.0);
+    matrix_set(slau, 1, 2, 2.0); matrix_set(slau, 1, 3, -11.0); // -3x - y + 2z = -11
+
     matrix_set(slau, 2, 0, -2.0); matrix_set(slau, 2, 1, 1.0);
-    matrix_set(slau, 2, 2, 2.0); matrix_set(slau, 2, 3, -3.0);
+    matrix_set(slau, 2, 2, 2.0); matrix_set(slau, 2, 3, -3.0);  // -2x + y + 2z = -3
 
     printf("\nСистема линейных уравнений:\n");
     matrix_print(slau);
@@ -81,3 +83,4 @@ int main(void) {
 
     return 0;
 }
+
